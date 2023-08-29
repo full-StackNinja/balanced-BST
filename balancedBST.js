@@ -128,17 +128,16 @@ class Tree {
   #preOrderRecur(node, cb) {
     if (cb) {
       if (node.left === null && node.right === null) return node;
-      cb(node)
-      const nodeLeft = this.#preOrderRecur(node.left, cb)
+      cb(node);
+      const nodeLeft = this.#preOrderRecur(node.left, cb);
       if (nodeLeft) {
-        cb(nodeLeft)
+        cb(nodeLeft);
       }
-      const nodeRight = this.#preOrderRecur(node.right, cb)
+      const nodeRight = this.#preOrderRecur(node.right, cb);
       if (nodeRight) {
-        cb(nodeRight)
+        cb(nodeRight);
       }
-    }
-    else {
+    } else {
       return node === null ? [] : [node.data].concat(...this.#preOrderRecur(node.left)).concat(...this.#preOrderRecur(node.right));
     }
   }
@@ -148,6 +147,31 @@ class Tree {
       this.#preOrderRecur(this.root, cb);
     } else {
       return this.#preOrderRecur(this.root);
+    }
+  }
+
+  #postOrderRecur(node, cb) {
+    if (cb) {
+      if (node.left === null && node.right === null) return node;
+      const nodeLeft = this.#postOrderRecur(node.left, cb);
+      if (nodeLeft) {
+        cb(nodeLeft);
+      }
+      const nodeRight = this.#postOrderRecur(node.right, cb);
+      if (nodeRight) {
+        cb(nodeRight);
+      }
+      cb(node);
+    } else {
+      return node === null ? [] : [...this.#postOrderRecur(node.left)].concat(this.#postOrderRecur(node.right)).concat(node.data);
+    }
+  }
+
+  postorder(cb) {
+    if (cb) {
+      this.#postOrderRecur(this.root, cb);
+    } else {
+      return this.#postOrderRecur(this.root);
     }
   }
 }
@@ -175,12 +199,12 @@ prettyPrint(tree.root);
 tree.delete();
 prettyPrint(tree.root);
 // console.log('node is: ',tree.find(6))
-console.log('INORDER...')
+console.log("INORDER...");
 tree.inorder(nodes);
-console.log("PREORDER...")
-tree.preorder(nodes)
-console.log("POSTORDER...")
-tree.postorder(nodes)
+console.log("PREORDER...");
+tree.preorder(nodes);
+console.log("POSTORDER...");
+console.log(tree.postorder(nodes));
 function nodes(node) {
-  console.log(node.data)
+  console.log(node.data);
 }
