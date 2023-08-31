@@ -27,14 +27,15 @@ function buildTree(arr, start, end) {
 // BST Tree class
 class Tree {
   constructor(arr) {
-    // First sort array
-    const sortedArr = arr.sort((a, b) => a - b);
 
     // delete duplicates
-    const uniqueArr = Array.from(new Set(sortedArr));
+    const uniqueArr = Array.from(new Set(arr));
+
+    // Sort array
+    const sortedArr = uniqueArr.sort((a, b) => a - b);
 
     // Then return root node of the balanced BST
-    this.root = buildTree(uniqueArr, 0, arr.length - 1);
+    this.root = buildTree(sortedArr, 0, sortedArr.length - 1);
   }
 
   #insertRecur(node, value) {
@@ -174,6 +175,38 @@ class Tree {
       return this.#postOrderRecur(this.root);
     }
   }
+
+  #getHeight(node) {
+    let height = 0;
+    if (node === null) return -1;
+    height += 1;
+    height += Math.max(this.#getHeight(node.left), this.#getHeight(node.right));
+    return height;
+  }
+
+  height() {
+    const maxHeight = this.#getHeight(this.root);
+    return maxHeight;
+  }
+
+  #getDepth(node, value) {
+    let depth = 0;
+    if (node.data === value) return 0;
+    depth += 1;
+    if (node.data > value) {
+      depth+=this.#getDepth(node.left, value)
+    }
+    else {
+      depth+=this.#getDepth(node.right, value)
+    }
+    return depth;
+  }
+
+  depth(node) {
+    const depth = this.#getDepth(this.root,node.data)
+    return depth;
+  }
+
 }
 
 // Function to print BST in tree format
@@ -190,21 +223,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-const arr = [1, 2, 3, 4, 5, 6, 7];
+const arr = [1, 2, 3, 4, 5, 6, 7,-8,-8,7,0,-4,8,10,22,-23,-23,-23];
 
 const tree = new Tree(arr);
-tree.insert();
-// console.log(tree.delete())
 prettyPrint(tree.root);
-tree.delete();
-prettyPrint(tree.root);
-// console.log('node is: ',tree.find(6))
-console.log("INORDER...");
-tree.inorder(nodes);
-console.log("PREORDER...");
-tree.preorder(nodes);
-console.log("POSTORDER...");
-console.log(tree.postorder(nodes));
-function nodes(node) {
-  console.log(node.data);
-}
