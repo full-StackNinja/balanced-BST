@@ -1,5 +1,5 @@
 # balanced-BST
-- Balanaced Binary Search Tree implemmentation in JavaScript.
+- Balanced Binary Search Tree implemmentation in JavaScript.
 - Following methods have been defined for the BST:
   - insert(value): To insert the value as node in the tree by keeping the properties of BST
   - delete(value): to delete the node from the Tree
