@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-else-return */
 /* eslint-disable no-param-reassign */
@@ -27,7 +28,6 @@ function buildTree(arr, start, end) {
 // BST Tree class
 class Tree {
   constructor(arr) {
-
     // delete duplicates
     const uniqueArr = Array.from(new Set(arr));
 
@@ -184,8 +184,8 @@ class Tree {
     return height;
   }
 
-  height() {
-    const maxHeight = this.#getHeight(this.root);
+  height(node) {
+    const maxHeight = this.#getHeight(node);
     return maxHeight;
   }
 
@@ -194,19 +194,41 @@ class Tree {
     if (node.data === value) return 0;
     depth += 1;
     if (node.data > value) {
-      depth+=this.#getDepth(node.left, value)
-    }
-    else {
-      depth+=this.#getDepth(node.right, value)
+      depth += this.#getDepth(node.left, value);
+    } else {
+      depth += this.#getDepth(node.right, value);
     }
     return depth;
   }
 
   depth(node) {
-    const depth = this.#getDepth(this.root,node.data)
+    const depth = this.#getDepth(this.root, node.data);
     return depth;
   }
 
+  #isBalancedRecur(queue) {
+    if (queue.length === 0) return true;
+    const node = queue.shift();
+    if (node.left) {
+      queue.push(node.left);
+    }
+    if (node.right) {
+      queue.push(node.right);
+    }
+
+    const heightLeft = this.height(node.left);
+    const heightRight = this.height(node.right);
+    const status = Math.abs(heightLeft - heightRight) > 1 ? false : true;
+
+    return status * this.#isBalancedRecur(queue);
+  }
+
+  isBalanced() {
+    const node = this.root;
+    const status = this.#isBalancedRecur([node]);
+    return this.#isBalancedRecur([node]) === 1 ? true : false;
+    return status;
+  }
 }
 
 // Function to print BST in tree format
@@ -223,7 +245,16 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-const arr = [1, 2, 3, 4, 5, 6, 7,-8,-8,7,0,-4,8,10,22,-23,-23,-23];
+const arr = [1, 2, 3, 4, 5, 6, 7];
 
 const tree = new Tree(arr);
+// prettyPrint(tree.root);
+// tree.insert(100);
+// tree.insert(101);
+// tree.insert(102);
+// tree.insert(104);
+// console.log(tree.isBalanced());
 prettyPrint(tree.root);
+console.log(tree.isBalanced());
+// console.log("right height is", tree.height(tree.root.left.left));
+// console.log("height by tree.find is", tree.height(tree.find(2)));
