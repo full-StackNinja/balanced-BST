@@ -225,9 +225,12 @@ class Tree {
 
   isBalanced() {
     const node = this.root;
-    const status = this.#isBalancedRecur([node]);
     return this.#isBalancedRecur([node]) === 1 ? true : false;
-    return status;
+  }
+
+  rebalance() {
+    const inorderArr = this.inorder()
+    this.root = buildTree(inorderArr, 0, inorderArr.length-1)
   }
 }
 
@@ -245,16 +248,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-const arr = [1, 2, 3, 4, 5, 6, 7];
-
-const tree = new Tree(arr);
-// prettyPrint(tree.root);
-// tree.insert(100);
-// tree.insert(101);
-// tree.insert(102);
-// tree.insert(104);
-// console.log(tree.isBalanced());
-prettyPrint(tree.root);
-console.log(tree.isBalanced());
-// console.log("right height is", tree.height(tree.root.left.left));
-// console.log("height by tree.find is", tree.height(tree.find(2)));
+export {Tree, prettyPrint}
