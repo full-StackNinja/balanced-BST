@@ -1,8 +1,9 @@
 {
+  "type": "module",
   "name": "balanced-bst",
   "version": "1.0.0",
   "description": "",
-  "main": "balancedBST.js",
+  "main": "driverScript.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

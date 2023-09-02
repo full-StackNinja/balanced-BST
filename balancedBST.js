@@ -101,6 +101,63 @@ class Tree {
     return this.#findNode(this.root, value);
   }
 
+  #levelTraverse(queue, cb) {
+    if (cb) {
+      if (queue.length === 0) return [];
+      const node = queue.shift();
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);
+      }
+      cb(node);
+      this.#levelTraverse(queue, cb);
+    } else {
+      if (queue.length === 0) return [];
+      const node = queue.shift();
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);
+      }
+      return [node.data].concat(this.#levelTraverse(queue, cb));
+    }
+  }
+
+  levelOrderRecur(cb) {
+    if (cb) {
+      this.#levelTraverse([this.root], cb);
+    } else {
+      return this.#levelTraverse([this.root]);
+    }
+  }
+
+  levelOrderIter(callback) {
+    const arr = [];
+    const queue = [this.root];
+
+    while (queue.length > 0) {
+      const node = queue.shift();
+      if (node.left !== null) {
+        queue.push(node.left);
+      }
+      if (node.right !== null) {
+        queue.push(node.right);
+      }
+
+      if (callback) {
+        callback(node);
+      } else {
+        arr.push(node.data);
+      }
+    }
+    if (!callback) {
+      return arr;
+    }
+  }
+
   #inorderRecur(node, cb) {
     if (cb) {
       if (node.left === null && node.right === null) return node;
@@ -229,8 +286,8 @@ class Tree {
   }
 
   rebalance() {
-    const inorderArr = this.inorder()
-    this.root = buildTree(inorderArr, 0, inorderArr.length-1)
+    const inorderArr = this.inorder();
+    this.root = buildTree(inorderArr, 0, inorderArr.length - 1);
   }
 }
 
@@ -248,4 +305,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-export {Tree, prettyPrint}
+export { Tree, prettyPrint };
